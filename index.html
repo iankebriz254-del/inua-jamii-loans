@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Inua Jamii Loans — Empowering you. Growing together.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0E2340;
+    --navy-2:#16304F;
+    --green:#5C9A2E;
+    --green-dark:#3F6E1F;
+    --green-tint:#EAF3DE;
+    --cream:#F7F7F3;
+    --white:#FFFFFF;
+    --ink:#1A2433;
+    --ink-soft:#5B6472;
+    --line:#E4E2D8;
+    --danger:#B3261E;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(14,35,64,0.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brandline{font-family:'Sora',sans-serif;}
+  h1,h2,h3{color:var(--navy); margin:0; font-weight:600;}
+  a{color:inherit;}
+  button{font-family:'Inter',sans-serif; cursor:pointer;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  .hidden{display:none !important;}
+
+  /* Nav */
+  header.site{
+    position:sticky; top:0; z-index:20;
+    background:var(--white); border-bottom:1px solid var(--line);
+  }
+  .navrow{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:1080px; margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer;}
+  .brand .mark{
+    width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0;
+  }
+  .brand .word{font-weight:600; font-size:15px; color:var(--navy); line-height:1.2;}
+  .brand .word span{display:block; font-size:10px; font-weight:400; color:var(--ink-soft); letter-spacing:0.02em;}
+  .navactions{display:flex; gap:10px; align-items:center;}
+  .btn{
+    border-radius:10px; padding:10px 18px; font-size:14px; font-weight:500;
+    border:1px solid transparent; transition:transform .08s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--green); color:var(--white);}
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-ghost{background:transparent; color:var(--navy); border-color:var(--line);}
+  .btn-ghost:hover{border-color:var(--navy);}
+  .btn-dark{background:var(--navy); color:var(--white);}
+  .btn-dark:hover{background:var(--navy-2);}
+  .btn-block{width:100%; padding:12px 18px; font-size:15px;}
+  .btn-sm{padding:7px 14px; font-size:13px;}
+
+  /* Hero */
+  .hero{position:relative; overflow:hidden; background:var(--white); padding:64px 0 0;}
+  .hero-inner{display:grid; grid-template-columns:1fr; gap:36px; align-items:center; position:relative; z-index:2;}
+  .eyebrow{color:var(--green-dark); font-weight:600; font-size:14px; margin:0 0 12px;}
+  .hero h1{font-size:38px; line-height:1.15; letter-spacing:-0.01em;}
+  .hero p.lead{color:var(--ink-soft); font-size:16px; max-width:46ch; margin:16px 0 26px;}
+  .hero-ctas{display:flex; flex-wrap:wrap; gap:14px; align-items:center;}
+  .hero-ctas .track{font-size:14px; color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px;}
+  .hero-art{position:relative; height:280px; display:flex; align-items:center; justify-content:center;}
+  .swoosh{position:absolute; border-radius:50%; background:var(--green-tint);}
+  .swoosh.s1{width:340px; height:340px; top:-60px; right:-100px;}
+  .swoosh.s2{width:210px; height:210px; bottom:-60px; right:40px; background:var(--navy); opacity:0.05;}
+  .hero-badge{
+    position:relative; z-index:2; width:220px; height:220px; border-radius:50%;
+    object-fit:cover; box-shadow:var(--shadow);
+  }
+
+  /* Whether it's strip */
+  .whether{background:var(--navy); color:var(--white); padding:36px 0;}
+  .whether .label{font-size:14px; color:#9FB3CC; margin:0 0 18px;}
+  .cat-list{display:grid; grid-template-columns:1fr; gap:0;}
+  .cat-item{
+    display:flex; align-items:center; gap:14px; padding:16px 0;
+    border-top:1px solid rgba(255,255,255,0.12);
+  }
+  .cat-item:last-child{border-bottom:1px solid rgba(255,255,255,0.12);}
+  .cat-icon{
+    width:40px; height:40px; border-radius:50%; background:rgba(92,154,46,0.18);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .cat-icon svg{width:20px; height:20px; color:var(--green);}
+  .cat-text .t{font-weight:600; font-size:15px;}
+  .cat-text .d{font-size:13px; color:#B9C4D3;}
+
+  /* Trust strip */
+  .trust{background:var(--green); padding:28px 0;}
+  .trust-grid{display:grid; grid-template-columns:1fr; gap:20px;}
+  .trust-item{display:flex; gap:12px; align-items:flex-start; color:var(--white);}
+  .trust-item svg{width:26px; height:26px; flex-shrink:0; margin-top:2px;}
+  .trust-item .t{font-weight:600; font-size:15px;}
+  .trust-item .d{font-size:13px; color:var(--green-tint);}
+
+  /* Footer */
+  footer.site{background:var(--navy-2); color:var(--white); padding:32px 0;}
+  .foot-row{display:flex; flex-direction:column; gap:20px; align-items:flex-start; justify-content:space-between;}
+  .foot-follow .t{font-weight:600; font-size:14px; margin:0 0 4px;}
+  .foot-follow .d{font-size:13px; color:#AEBBCC; margin:0;}
+  .foot-social{display:flex; gap:10px; align-items:center; margin-top:10px;}
+  .foot-social a{
+    width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.1);
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+  .foot-social svg{width:16px; height:16px; color:var(--white);}
+  .foot-tag{font-family:'Caveat',cursive; font-size:26px; color:var(--green); font-weight:600;}
+
+  /* Auth / form pages */
+  .page-narrow{max-width:420px; margin:0 auto; padding:56px 24px 80px;}
+  .card{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px 28px; box-shadow:var(--shadow);
+  }
+  .card .mark-sm{
+    width:44px; height:44px; border-radius:50%; object-fit:cover; margin-bottom:18px; display:block;
+  }
+  .card h2{font-size:22px; margin-bottom:4px;}
+  .card .sub{color:var(--ink-soft); font-size:14px; margin:0 0 22px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; font-weight:500; color:var(--navy); margin-bottom:6px;}
+  .field input, .field select{
+    width:100%; padding:11px 12px; border:1px solid var(--line); border-radius:9px;
+    font-size:14px; font-family:'Inter',sans-serif; background:var(--white); color:var(--ink);
+  }
+  .field input:focus, .field select:focus{outline:none; border-color:var(--green);}
+  .field .err{color:var(--danger); font-size:12px; margin-top:5px; display:none;}
+  .field.has-err input, .field.has-err select{border-color:var(--danger);}
+  .field.has-err .err{display:block;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .switch-line{text-align:center; font-size:13px; color:var(--ink-soft); margin-top:16px;}
+  .switch-line .link{color:var(--green-dark); font-weight:500; cursor:pointer; text-decoration:underline; text-underline-offset:2px;}
+  .form-msg{font-size:13px; padding:10px 12px; border-radius:9px; margin-bottom:16px; display:none;}
+  .form-msg.show{display:block;}
+  .form-msg.err{background:#FBEAEA; color:var(--danger);}
+  .form-msg.ok{background:var(--green-tint); color:var(--green-dark);}
+
+  /* Dashboard */
+  .dash-wrap{max-width:520px; margin:0 auto; padding:40px 24px 80px;}
+  .dash-hi{color:var(--ink-soft); font-size:14px; margin:0 0 2px;}
+  .dash-h1{font-size:22px; margin-bottom:20px;}
+  .status-card{background:var(--navy); border-radius:var(--radius); padding:18px 20px; color:var(--white); margin-bottom:16px;}
+  .status-card .k{font-size:12px; color:#9FB3CC; margin:0 0 6px;}
+  .status-card .v{font-size:17px; font-weight:600; display:flex; align-items:center; gap:8px;}
+  .status-card .v svg{width:18px; height:18px;}
+  .dash-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;}
+  .dash-stat{background:var(--white); border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
+  .dash-stat .k{font-size:12px; color:var(--ink-soft); margin:0 0 4px;}
+  .dash-stat .v{font-size:15px; font-weight:600; color:var(--navy);}
+  .empty-dash{text-align:center; padding:30px 10px;}
+  .empty-dash p{color:var(--ink-soft); font-size:14px; margin:8px 0 20px;}
+
+  @media (min-width:760px){
+    .hero-inner{grid-template-columns:1.1fr 0.9fr;}
+    .hero h1{font-size:48px;}
+    .cat-list{grid-template-columns:repeat(4,1fr);}
+    .cat-item{flex-direction:column; align-items:flex-start; border-top:none; border-left:1px solid rgba(255,255,255,0.12); padding:0 20px;}
+    .cat-item:first-child{padding-left:0;}
+    .cat-item:last-child{border-bottom:none;}
+    .trust-grid{grid-template-columns:repeat(3,1fr);}
+    .foot-row{flex-direction:row; align-items:center;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="navrow">
+    <a class="brand" onclick="go('home')">
+      <img class="mark" src="logo.png" alt="Inua Jamii Loans logo" />
+      <span class="word">Inua Jamii Loans<span>Empowering you. Growing together.</span></span>
+    </a>
+    <div class="navactions" id="navActions"></div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="site">
+  <div class="wrap foot-row">
+    <div class="foot-follow">
+      <p class="t">Follow us</p>
+      <p class="d">For loan updates and application information.</p>
+      <div class="foot-social">
+        <a href="#" onclick="return false;" aria-label="Facebook" id="socFb"></a>
+        <a href="#" onclick="return false;" aria-label="Instagram" id="socIg"></a>
+        <a href="#" onclick="return false;" aria-label="TikTok" id="socTt"></a>
+      </div>
+    </div>
+    <div class="foot-tag">Inua Jamii, Inua Maisha.</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- Icons (inline SVG, stroke style) ---------- */
+const ICONS = {
+  threePeople: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="2.2"/><path d="M8 15c0-2 1.8-3.2 4-3.2s4 1.2 4 3.2v2H8v-2Z"/><circle cx="5" cy="9" r="1.6"/><path d="M2.2 16.2c0-1.6 1.3-2.6 2.8-2.6"/><circle cx="19" cy="9" r="1.6"/><path d="M21.8 16.2c0-1.6-1.3-2.6-2.8-2.6"/></svg>`,
+  briefcase: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2"/><path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5"/><path d="M3 12.5h18"/></svg>`,
+  school: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.5 12 4l10 4.5-10 4.5L2 8.5Z"/><path d="M6 10.8v4.4c0 1.5 2.7 2.8 6 2.8s6-1.3 6-2.8v-4.4"/><path d="M21 9v6"/></svg>`,
+  medical: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M12 10v6M9 13h6"/><path d="M8 6V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1"/></svg>`,
+  user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>`,
+  clock: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>`,
+  shield: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z"/><path d="M9 12l2 2 4-4"/></svg>`,
+  bolt: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg>`,
+  cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6.5" width="19" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9v0M18 15v0"/></svg>`,
+  lock: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>`,
+  facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8.5h-2a1 1 0 0 0-1 1V11h3l-.4 3H12v6.5h-3V14H7v-3h2V9c0-2.2 1.3-3.5 3.5-3.5H15v3Z"/></svg>`,
+  instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="16.6" cy="7.4" r="0.6" fill="currentColor" stroke="none"/></svg>`,
+  tiktok: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v9.6a3.4 3.4 0 1 1-2.6-3.3"/><path d="M14 4c.3 2 1.8 3.5 3.8 3.7"/></svg>`
+};
+
+/* ---------- In-memory demo state (resets on reload — no backend yet) ---------- */
+let state = { loggedIn:false, user:null, application:null };
+let currentPage = 'home';
+
+/* ---------- Nav rendering ---------- */
+function renderNav(){
+  const el = document.getElementById('navActions');
+  if(state.loggedIn){
+    el.innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="go('dashboard')">Dashboard</button>
+      <button class="btn btn-dark btn-sm" onclick="logout()">Log out</button>`;
+  } else {
+    el.innerHTML = `
+      <button class="btn btn-ghost btn-sm" onclick="go('login')">Log in</button>
+      <button class="btn btn-primary btn-sm" onclick="go('signup')">Sign up</button>`;
+  }
+}
+
+/* ---------- Router ---------- */
+function go(page){
+  if((page==='apply' || page==='dashboard') && !state.loggedIn){
+    page = 'login';
+  }
+  currentPage = page;
+  renderNav();
+  document.getElementById('app').innerHTML = PAGES[page]();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function logout(){
+  state = { loggedIn:false, user:null, application:state.application };
+  go('home');
+}
+
+/* ---------- Page templates ---------- */
+const PAGES = {
+  home: () => `
+    <section class="hero">
+      <div class="wrap hero-inner">
+        <div>
+          <p class="eyebrow">Empowering you. Growing together.</p>
+          <h1>Need financial support?</h1>
+          <p class="lead">At Inua Jamii Loans, we help you cover business costs, school fees, emergencies and personal needs — with a simple application and a real person reviewing it.</p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary" onclick="go('${state.loggedIn ? 'apply' : 'signup'}')">Start your application</button>
+            <span class="track" onclick="go('${state.loggedIn ? 'dashboard' : 'login'}')">Already applied? Track your status</span>
+          </div>
+        </div>
+        <div class="hero-art">
+          <div class="swoosh s1"></div>
+          <div class="swoosh s2"></div>
+          <img class="hero-badge" src="logo.png" alt="Inua Jamii Loans logo" />
+        </div>
+      </div>
+    </section>
+
+    <section class="whether">
+      <div class="wrap">
+        <p class="label">Whether it's</p>
+        <div class="cat-list">
+          <div class="cat-item"><div class="cat-icon">${ICONS.briefcase}</div><div class="cat-text"><div class="t">Business</div><div class="d">Grow your business</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.school}</div><div class="cat-text"><div class="t">School fees</div><div class="d">Invest in your future</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.medical}</div><div class="cat-text"><div class="t">Emergencies</div><div class="d">We're here when you need us</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.user}</div><div class="cat-text"><div class="t">Personal needs</div><div class="d">Support for everyday life</div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust">
+      <div class="wrap trust-grid">
+        <div class="trust-item">${ICONS.bolt}<div><div class="t">Quick approval</div><div class="d">Fast, simple process</div></div></div>
+        <div class="trust-item">${ICONS.shield}<div><div class="t">Safe & secure</div><div class="d">Your data is protected</div></div></div>
+        <div class="trust-item">${ICONS.cash}<div><div class="t">Affordable rates</div><div class="d">Repay comfortably</div></div></div>
+      </div>
+    </section>
+  `,
+
+  signup: () => `
+    <div class="page-narrow">
+      <div class="card">
+        <img class="mark-sm" src="logo.png" alt="Inua Jamii Loans logo" />
+        <h2>Create your account</h2>
+        <p class="sub">Takes less than a minute.</p>
+        <div id="signupMsg" class="form-msg err"></div>
+        <div class="field" id="f-name"><label>Full name</label><input id="i-name" type="text" placeholder="Jane Wanjiru" /><div class="err">Enter your full name</div></div>
+        <div class="field" id="f-phone"><label>Phone number</label><input id="i-phone" type="text" placeholder="07XX XXX XXX" /><div class="err">Enter a valid phone number</div></div>
+        <div class="field" id="f-pass"><label>Password</label><input id="i-pass" type="password" placeholder="At least 6 characters" /><div class="err">Password must be at least 6 characters</div></div>
+        <div class="field" id="f-pass2"><label>Confirm password</label><input id="i-pass2" type="password" placeholder="Re-enter password" /><div class="err">Passwords don't match</div></div>
+        <button class="btn btn-primary btn-block" onclick="submitSignup()">Create account</button>
+        <p class="switch-line">Already have an account? <span class="link" onclick="go('login')">Log in</span></p>
+      </div>
+    </div>
+  `,
+
+  login: () => `
+    <div class="page-narrow">
+      <div class="card">
+        <img class="mark-sm" src="logo.png" alt="Inua Jamii Loans logo" />
+        <h2>Welcome back</h2>
+        <p class="sub">Log in to manage your loan.</p>
+        <div id="loginMsg" class="form-msg err"></div>
+        <div class="field" id="lf-phone"><label>Phone number</label><input id="li-phone" type="text" placeholder="07XX XXX XXX" /><div class="err">Enter your phone number</div></div>
+        <div class="field" id="lf-pass"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••" /><div class="err">Enter your password</div></div>
+        <button class="btn btn-dark btn-block" onclick="submitLogin()">Log in</button>
+        <p class="switch-line">Don't have an account? <span class="link" onclick="go('signup')">Sign up</span></p>
+      </div>
+    </div>
+  `,
+
+  apply: () => `
+    <div class="page-narrow">
+      <div class="card">
+        <h2>Loan application</h2>
+        <p class="sub">Fill in your details below.</p>
+        <div id="applyMsg" class="form-msg err"></div>
+        <div class="field" id="af-cat"><label>Loan category</label>
+          <select id="a-cat">
+            <option value="Business">Business</option>
+            <option value="School fees">School fees</option>
+            <option value="Emergency">Emergency</option>
+            <option value="Personal">Personal</option>
+          </select>
+        </div>
+        <div class="field" id="af-amt"><label>Amount requested (KSh)</label><input id="a-amt" type="text" placeholder="20,000" /><div class="err">Enter an amount</div></div>
+        <div class="field" id="af-term"><label>Repayment period</label>
+          <select id="a-term">
+            <option>1 month</option><option>3 months</option><option>6 months</option><option>12 months</option>
+          </select>
+        </div>
+        <div class="field" id="af-id"><label>National ID number</label><input id="a-id" type="text" placeholder="12345678" /><div class="err">Enter your ID number</div></div>
+        <div class="row2">
+          <div class="field" id="af-kin"><label>Next of kin</label><input id="a-kin" type="text" placeholder="Full name" /><div class="err">Required</div></div>
+          <div class="field" id="af-kinphone"><label>Their phone</label><input id="a-kinphone" type="text" placeholder="07XX XXX XXX" /><div class="err">Required</div></div>
+        </div>
+        <button class="btn btn-dark btn-block" onclick="submitApplication()">Submit application</button>
+      </div>
+    </div>
+  `,
+
+  dashboard: () => {
+    const app = state.application;
+    return `
+    <div class="dash-wrap">
+      <p class="dash-hi">Hi, ${state.user ? state.user.name.split(' ')[0] : ''}</p>
+      <h2 class="dash-h1">Your loan overview</h2>
+      ${app ? `
+        <div class="status-card">
+          <p class="k">Application status</p>
+          <div class="v">${ICONS.clock} ${app.status}</div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-stat"><div class="k">Amount requested</div><div class="v">KSh ${app.amount}</div></div>
+          <div class="dash-stat"><div class="k">Category</div><div class="v">${app.category}</div></div>
+          <div class="dash-stat"><div class="k">Repayment period</div><div class="v">${app.term}</div></div>
+          <div class="dash-stat"><div class="k">Next of kin</div><div class="v">${app.kin}</div></div>
+        </div>
+      ` : `
+        <div class="card empty-dash">
+          <p>You haven't submitted a loan application yet.</p>
+          <button class="btn btn-primary" onclick="go('apply')">Start application</button>
+        </div>
+      `}
+    </div>
+  `;},
+};
+
+/* ---------- Form handling (demo — in-memory only, no backend yet) ---------- */
+function setErr(fieldId, on){
+  const f = document.getElementById(fieldId);
+  if(f) f.classList.toggle('has-err', !!on);
+}
+function showMsg(id, text){
+  const m = document.getElementById(id);
+  m.textContent = text; m.classList.add('show');
+}
+
+function submitSignup(){
+  const name = document.getElementById('i-name').value.trim();
+  const phone = document.getElementById('i-phone').value.trim();
+  const pass = document.getElementById('i-pass').value;
+  const pass2 = document.getElementById('i-pass2').value;
+  let ok = true;
+  setErr('f-name', !name); if(!name) ok=false;
+  setErr('f-phone', phone.length < 9); if(phone.length < 9) ok=false;
+  setErr('f-pass', pass.length < 6); if(pass.length < 6) ok=false;
+  setErr('f-pass2', pass !== pass2 || !pass2); if(pass !== pass2 || !pass2) ok=false;
+  if(!ok){ showMsg('signupMsg', 'Please fix the highlighted fields.'); return; }
+  state.user = { name, phone, pass };
+  state.loggedIn = true;
+  go('apply');
+}
+
+function submitLogin(){
+  const phone = document.getElementById('li-phone').value.trim();
+  const pass = document.getElementById('li-pass').value;
+  let ok = true;
+  setErr('lf-phone', !phone); if(!phone) ok=false;
+  setErr('lf-pass', !pass); if(!pass) ok=false;
+  if(!ok){ showMsg('loginMsg', 'Please fill in both fields.'); return; }
+  if(!state.user || state.user.phone !== phone || state.user.pass !== pass){
+    showMsg('loginMsg', 'No matching account found on this demo. Try signing up first.');
+    return;
+  }
+  state.loggedIn = true;
+  go('dashboard');
+}
+
+function submitApplication(){
+  const amount = document.getElementById('a-amt').value.trim();
+  const idnum = document.getElementById('a-id').value.trim();
+  const kin = document.getElementById('a-kin').value.trim();
+  const kinphone = document.getElementById('a-kinphone').value.trim();
+  let ok = true;
+  setErr('af-amt', !amount); if(!amount) ok=false;
+  setErr('af-id', !idnum); if(!idnum) ok=false;
+  setErr('af-kin', !kin); if(!kin) ok=false;
+  setErr('af-kinphone', !kinphone); if(!kinphone) ok=false;
+  if(!ok){ showMsg('applyMsg', 'Please fill in all required fields.'); return; }
+  state.application = {
+    category: document.getElementById('a-cat').value,
+    amount, term: document.getElementById('a-term').value,
+    idnum, kin: `${kin} (${kinphone})`, status: 'Under review'
+  };
+  go('dashboard');
+}
+
+/* ---------- Init ---------- */
+document.getElementById('socFb').innerHTML = ICONS.facebook;
+document.getElementById('socIg').innerHTML = ICONS.instagram;
+document.getElementById('socTt').innerHTML = ICONS.tiktok;
+go('home');
+</script>
+</body>
+</html>
