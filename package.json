@@ -1,11 +1,14 @@
 {
-  "name": "inua-jamii-loans",
+  "name": "tumaini-loans",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mongodb": "^6.9.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
   }
 }

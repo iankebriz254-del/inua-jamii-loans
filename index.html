@@ -239,9 +239,10 @@ const ICONS = {
   tiktok: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v9.6a3.4 3.4 0 1 1-2.6-3.3"/><path d="M14 4c.3 2 1.8 3.5 3.8 3.7"/></svg>`
 };
 
-/* ---------- In-memory demo state (resets on reload — no backend yet) ---------- */
+/* ---------- Real session state (backed by the server + database) ---------- */
 let state = { loggedIn:false, user:null, application:null };
 let currentPage = 'home';
+const TOKEN_KEY = 'tumaini_token';
 
 /* ---------- Nav rendering ---------- */
 function renderNav(){
@@ -269,7 +270,8 @@ function go(page){
 }
 
 function logout(){
-  state = { loggedIn:false, user:null, application:state.application };
+  localStorage.removeItem(TOKEN_KEY);
+  state = { loggedIn:false, user:null, application:null };
   go('home');
 }
 
@@ -418,7 +420,7 @@ function showMsg(id, text){
   m.textContent = text; m.classList.add('show');
 }
 
-function submitSignup(){
+async function submitSignup(){
   const name = document.getElementById('i-name').value.trim();
   const phone = document.getElementById('i-phone').value.trim();
   const pass = document.getElementById('i-pass').value;
@@ -429,27 +431,49 @@ function submitSignup(){
   setErr('f-pass', pass.length < 6); if(pass.length < 6) ok=false;
   setErr('f-pass2', pass !== pass2 || !pass2); if(pass !== pass2 || !pass2) ok=false;
   if(!ok){ showMsg('signupMsg', 'Please fix the highlighted fields.'); return; }
-  state.user = { name, phone, pass };
-  state.loggedIn = true;
-  go('apply');
+  try{
+    const res = await fetch('/api/signup', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, phone, password: pass })
+    });
+    const data = await res.json();
+    if(!res.ok){ showMsg('signupMsg', data.error || 'Something went wrong. Please try again.'); return; }
+    localStorage.setItem(TOKEN_KEY, data.token);
+    state.loggedIn = true;
+    state.user = { name: data.name };
+    go('apply');
+  } catch(e){
+    showMsg('signupMsg', 'Could not reach the server. Check your connection and try again.');
+  }
 }
 
-function submitLogin(){
+async function submitLogin(){
   const phone = document.getElementById('li-phone').value.trim();
   const pass = document.getElementById('li-pass').value;
   let ok = true;
   setErr('lf-phone', !phone); if(!phone) ok=false;
   setErr('lf-pass', !pass); if(!pass) ok=false;
   if(!ok){ showMsg('loginMsg', 'Please fill in both fields.'); return; }
-  if(!state.user || state.user.phone !== phone || state.user.pass !== pass){
-    showMsg('loginMsg', 'No matching account found on this demo. Try signing up first.');
-    return;
+  try{
+    const res = await fetch('/api/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone, password: pass })
+    });
+    const data = await res.json();
+    if(!res.ok){ showMsg('loginMsg', data.error || 'Something went wrong. Please try again.'); return; }
+    localStorage.setItem(TOKEN_KEY, data.token);
+    state.loggedIn = true;
+    state.user = { name: data.name };
+    const meRes = await fetch('/api/me', { headers:{ 'Authorization':'Bearer '+data.token } });
+    const meData = await meRes.json();
+    state.application = meData.application || null;
+    go('dashboard');
+  } catch(e){
+    showMsg('loginMsg', 'Could not reach the server. Check your connection and try again.');
   }
-  state.loggedIn = true;
-  go('dashboard');
 }
 
-function submitApplication(){
+async function submitApplication(){
   const amount = document.getElementById('a-amt').value.trim();
   const idnum = document.getElementById('a-id').value.trim();
   const kin = document.getElementById('a-kin').value.trim();
@@ -460,19 +484,48 @@ function submitApplication(){
   setErr('af-kin', !kin); if(!kin) ok=false;
   setErr('af-kinphone', !kinphone); if(!kinphone) ok=false;
   if(!ok){ showMsg('applyMsg', 'Please fill in all required fields.'); return; }
-  state.application = {
+  const payload = {
     category: document.getElementById('a-cat').value,
     amount, term: document.getElementById('a-term').value,
-    idnum, kin: `${kin} (${kinphone})`, status: 'Under review'
+    idnum, kin: `${kin} (${kinphone})`
   };
-  go('dashboard');
+  try{
+    const token = localStorage.getItem(TOKEN_KEY);
+    const res = await fetch('/api/apply', {
+      method:'POST',
+      headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(!res.ok){ showMsg('applyMsg', data.error || 'Something went wrong. Please try again.'); return; }
+    state.application = { ...payload, status: 'Under review' };
+    go('dashboard');
+  } catch(e){
+    showMsg('applyMsg', 'Could not reach the server. Check your connection and try again.');
+  }
 }
 
 /* ---------- Init ---------- */
 document.getElementById('socFb').innerHTML = ICONS.facebook;
 document.getElementById('socIg').innerHTML = ICONS.instagram;
 document.getElementById('socTt').innerHTML = ICONS.tiktok;
-go('home');
+
+async function restoreSession(){
+  const token = localStorage.getItem(TOKEN_KEY);
+  if(!token){ go('home'); return; }
+  try{
+    const res = await fetch('/api/me', { headers:{ 'Authorization':'Bearer '+token } });
+    if(!res.ok) throw new Error('session expired');
+    const data = await res.json();
+    state.loggedIn = true;
+    state.user = { name: data.name };
+    state.application = data.application || null;
+  } catch(e){
+    localStorage.removeItem(TOKEN_KEY);
+  }
+  go('home');
+}
+restoreSession();
 </script>
 </body>
 </html>
