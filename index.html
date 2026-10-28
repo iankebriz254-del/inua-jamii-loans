@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Inua Jamii Loans — Empowering you. Growing together.</title>
+<title>Tumaini Loans — Your Dreams, Our Priority</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Caveat:wght@600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy:#0E2340;
-    --navy-2:#16304F;
-    --green:#5C9A2E;
-    --green-dark:#3F6E1F;
-    --green-tint:#EAF3DE;
+    --navy:#17551E;
+    --navy-2:#103E16;
+    --green:#6FBE44;
+    --green-dark:#4B9129;
+    --green-tint:#E9F6E0;
+    --gold:#F3B602;
+    --gold-dark:#C99300;
     --cream:#F7F7F3;
     --white:#FFFFFF;
     --ink:#1A2433;
@@ -21,7 +23,7 @@
     --line:#E4E2D8;
     --danger:#B3261E;
     --radius:14px;
-    --shadow:0 1px 2px rgba(14,35,64,0.06);
+    --shadow:0 1px 2px rgba(23,85,30,0.08);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -72,6 +74,15 @@
   .eyebrow{color:var(--green-dark); font-weight:600; font-size:14px; margin:0 0 12px;}
   .hero h1{font-size:38px; line-height:1.15; letter-spacing:-0.01em;}
   .hero p.lead{color:var(--ink-soft); font-size:16px; max-width:46ch; margin:16px 0 26px;}
+  .loan-limit{
+    display:inline-flex; align-items:center; gap:8px; background:var(--gold);
+    color:var(--navy-2); font-weight:700; font-size:15px; padding:8px 16px 8px 8px;
+    border-radius:999px; margin:0 0 20px;
+  }
+  .loan-limit span{
+    background:var(--navy); color:var(--white); font-weight:600; font-size:11px;
+    padding:4px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:0.03em;
+  }
   .hero-ctas{display:flex; flex-wrap:wrap; gap:14px; align-items:center;}
   .hero-ctas .track{font-size:14px; color:var(--ink-soft); text-decoration:underline; text-underline-offset:3px;}
   .hero-art{position:relative; height:280px; display:flex; align-items:center; justify-content:center;}
@@ -113,6 +124,7 @@
   .foot-row{display:flex; flex-direction:column; gap:20px; align-items:flex-start; justify-content:space-between;}
   .foot-follow .t{font-weight:600; font-size:14px; margin:0 0 4px;}
   .foot-follow .d{font-size:13px; color:#AEBBCC; margin:0;}
+  .whatsapp-link{color:var(--gold); font-weight:600; text-decoration:none;}
   .foot-social{display:flex; gap:10px; align-items:center; margin-top:10px;}
   .foot-social a{
     width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.1);
@@ -168,7 +180,7 @@
   @media (min-width:760px){
     .hero-inner{grid-template-columns:1.1fr 0.9fr;}
     .hero h1{font-size:48px;}
-    .cat-list{grid-template-columns:repeat(4,1fr);}
+    .cat-list{grid-template-columns:repeat(5,1fr);}
     .cat-item{flex-direction:column; align-items:flex-start; border-top:none; border-left:1px solid rgba(255,255,255,0.12); padding:0 20px;}
     .cat-item:first-child{padding-left:0;}
     .cat-item:last-child{border-bottom:none;}
@@ -182,8 +194,8 @@
 <header class="site">
   <div class="navrow">
     <a class="brand" onclick="go('home')">
-      <img class="mark" src="logo.png" alt="Inua Jamii Loans logo" />
-      <span class="word">Inua Jamii Loans<span>Empowering you. Growing together.</span></span>
+      <img class="mark" src="logo.png" alt="Tumaini Loans logo" />
+      <span class="word">Tumaini Loans<span>Your Dreams, Our Priority</span></span>
     </a>
     <div class="navactions" id="navActions"></div>
   </div>
@@ -202,7 +214,7 @@
         <a href="#" onclick="return false;" aria-label="TikTok" id="socTt"></a>
       </div>
     </div>
-    <div class="foot-tag">Inua Jamii, Inua Maisha.</div>
+    <div class="foot-tag">Together we build a better tomorrow.</div>
   </div>
 </footer>
 
@@ -219,6 +231,9 @@ const ICONS = {
   bolt: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z"/></svg>`,
   cash: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6.5" width="19" height="11" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9v0M18 15v0"/></svg>`,
   lock: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>`,
+  wallet: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9Z"/><path d="M15.5 13.2a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/><path d="M3 9.5h14"/></svg>`,
+  docCheck: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7l4 4V19a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 19V5A1.5 1.5 0 0 1 7 3.5Z"/><path d="M14 3.5V8h4"/><path d="M9 13.2l1.8 1.8L15 11"/></svg>`,
+  repeat: `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11a7 7 0 0 1 12-5l2 2"/><path d="M20 13a7 7 0 0 1-12 5l-2-2"/><path d="M17 5.5h2v2M7 18.5H5v-2"/></svg>`,
   facebook: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 8.5h-2a1 1 0 0 0-1 1V11h3l-.4 3H12v6.5h-3V14H7v-3h2V9c0-2.2 1.3-3.5 3.5-3.5H15v3Z"/></svg>`,
   instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.4"/><circle cx="16.6" cy="7.4" r="0.6" fill="currentColor" stroke="none"/></svg>`,
   tiktok: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 4v9.6a3.4 3.4 0 1 1-2.6-3.3"/><path d="M14 4c.3 2 1.8 3.5 3.8 3.7"/></svg>`
@@ -264,9 +279,10 @@ const PAGES = {
     <section class="hero">
       <div class="wrap hero-inner">
         <div>
-          <p class="eyebrow">Empowering you. Growing together.</p>
-          <h1>Need financial support?</h1>
-          <p class="lead">At Inua Jamii Loans, we help you cover business costs, school fees, emergencies and personal needs — with a simple application and a real person reviewing it.</p>
+          <p class="eyebrow">Your Dreams, Our Priority</p>
+          <h1>Get the support you need</h1>
+          <p class="lead">Tumaini Loans is here to help you reach your goals — quick, easy loans with simple requirements and flexible repayment options.</p>
+          <p class="loan-limit"><span>Loan limit</span>KSh 10,000 – 900,000</p>
           <div class="hero-ctas">
             <button class="btn btn-primary" onclick="go('${state.loggedIn ? 'apply' : 'signup'}')">Start your application</button>
             <span class="track" onclick="go('${state.loggedIn ? 'dashboard' : 'login'}')">Already applied? Track your status</span>
@@ -275,7 +291,7 @@ const PAGES = {
         <div class="hero-art">
           <div class="swoosh s1"></div>
           <div class="swoosh s2"></div>
-          <img class="hero-badge" src="logo.png" alt="Inua Jamii Loans logo" />
+          <img class="hero-badge" src="logo.png" alt="Tumaini Loans logo" />
         </div>
       </div>
     </section>
@@ -284,10 +300,11 @@ const PAGES = {
       <div class="wrap">
         <p class="label">Whether it's</p>
         <div class="cat-list">
-          <div class="cat-item"><div class="cat-icon">${ICONS.briefcase}</div><div class="cat-text"><div class="t">Business</div><div class="d">Grow your business</div></div></div>
-          <div class="cat-item"><div class="cat-icon">${ICONS.school}</div><div class="cat-text"><div class="t">School fees</div><div class="d">Invest in your future</div></div></div>
-          <div class="cat-item"><div class="cat-icon">${ICONS.medical}</div><div class="cat-text"><div class="t">Emergencies</div><div class="d">We're here when you need us</div></div></div>
-          <div class="cat-item"><div class="cat-icon">${ICONS.user}</div><div class="cat-text"><div class="t">Personal needs</div><div class="d">Support for everyday life</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.user}</div><div class="cat-text"><div class="t">Personal loans</div><div class="d">For your daily needs</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.briefcase}</div><div class="cat-text"><div class="t">Business loans</div><div class="d">Grow your small business</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.school}</div><div class="cat-text"><div class="t">Education loans</div><div class="d">Invest in your future</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.medical}</div><div class="cat-text"><div class="t">Emergency loans</div><div class="d">When you need it most</div></div></div>
+          <div class="cat-item"><div class="cat-icon">${ICONS.wallet}</div><div class="cat-text"><div class="t">Salary advance</div><div class="d">Bridge your next pay</div></div></div>
         </div>
       </div>
     </section>
@@ -304,7 +321,7 @@ const PAGES = {
   signup: () => `
     <div class="page-narrow">
       <div class="card">
-        <img class="mark-sm" src="logo.png" alt="Inua Jamii Loans logo" />
+        <img class="mark-sm" src="logo.png" alt="Tumaini Loans logo" />
         <h2>Create your account</h2>
         <p class="sub">Takes less than a minute.</p>
         <div id="signupMsg" class="form-msg err"></div>
@@ -321,7 +338,7 @@ const PAGES = {
   login: () => `
     <div class="page-narrow">
       <div class="card">
-        <img class="mark-sm" src="logo.png" alt="Inua Jamii Loans logo" />
+        <img class="mark-sm" src="logo.png" alt="Tumaini Loans logo" />
         <h2>Welcome back</h2>
         <p class="sub">Log in to manage your loan.</p>
         <div id="loginMsg" class="form-msg err"></div>
@@ -341,10 +358,11 @@ const PAGES = {
         <div id="applyMsg" class="form-msg err"></div>
         <div class="field" id="af-cat"><label>Loan category</label>
           <select id="a-cat">
-            <option value="Business">Business</option>
-            <option value="School fees">School fees</option>
-            <option value="Emergency">Emergency</option>
-            <option value="Personal">Personal</option>
+            <option value="Personal">Personal loan</option>
+            <option value="Business">Business loan</option>
+            <option value="Education">Education loan</option>
+            <option value="Emergency">Emergency loan</option>
+            <option value="Salary Advance">Salary advance</option>
           </select>
         </div>
         <div class="field" id="af-amt"><label>Amount requested (KSh)</label><input id="a-amt" type="text" placeholder="20,000" /><div class="err">Enter an amount</div></div>
