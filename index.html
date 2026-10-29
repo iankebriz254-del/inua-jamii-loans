@@ -214,7 +214,10 @@
         <a href="#" onclick="return false;" aria-label="TikTok" id="socTt"></a>
       </div>
     </div>
-    <div class="foot-tag">Together we build a better tomorrow.</div>
+    <div style="display:flex; flex-direction:column; align-items:flex-start; gap:10px;">
+      <div class="foot-tag">Together we build a better tomorrow.</div>
+      <a href="javascript:void(0)" onclick="go('admin')" style="color:#5a6e7a; font-size:11px; text-decoration:none;">Staff login</a>
+    </div>
   </div>
 </footer>
 
@@ -243,6 +246,7 @@ const ICONS = {
 let state = { loggedIn:false, user:null, application:null };
 let currentPage = 'home';
 const TOKEN_KEY = 'tumaini_token';
+const ADMIN_TOKEN_KEY = 'tumaini_admin_token';
 
 /* ---------- Nav rendering ---------- */
 function renderNav(){
@@ -267,6 +271,9 @@ function go(page){
   renderNav();
   document.getElementById('app').innerHTML = PAGES[page]();
   window.scrollTo({top:0, behavior:'smooth'});
+  if(page === 'admin' && localStorage.getItem(ADMIN_TOKEN_KEY)){
+    loadAdminApplications();
+  }
 }
 
 function logout(){
@@ -408,9 +415,34 @@ const PAGES = {
       `}
     </div>
   `;},
+
+  admin: () => {
+    if(!localStorage.getItem(ADMIN_TOKEN_KEY)){
+      return `
+        <div class="page-narrow">
+          <div class="card">
+            <h2>Admin login</h2>
+            <p class="sub">Staff only.</p>
+            <div id="adminMsg" class="form-msg err"></div>
+            <div class="field" id="adm-pass"><label>Admin password</label><input id="admin-pass" type="password" placeholder="••••••••" /></div>
+            <button class="btn btn-dark btn-block" onclick="submitAdminLogin()">Log in</button>
+          </div>
+        </div>
+      `;
+    }
+    return `
+      <div class="wrap" style="padding:32px 24px 80px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <h2>Applications</h2>
+          <button class="btn btn-ghost btn-sm" onclick="adminLogout()">Log out</button>
+        </div>
+        <div id="adminList"><p class="sub">Loading...</p></div>
+      </div>
+    `;
+  },
 };
 
-/* ---------- Form handling (demo — in-memory only, no backend yet) ---------- */
+/* ---------- Form handling (backed by the real server + database) ---------- */
 function setErr(fieldId, on){
   const f = document.getElementById(fieldId);
   if(f) f.classList.toggle('has-err', !!on);
@@ -502,6 +534,73 @@ async function submitApplication(){
     go('dashboard');
   } catch(e){
     showMsg('applyMsg', 'Could not reach the server. Check your connection and try again.');
+  }
+}
+
+async function submitAdminLogin(){
+  const password = document.getElementById('admin-pass').value;
+  try{
+    const res = await fetch('/api/admin/login', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+    if(!res.ok){ showMsg('adminMsg', data.error || 'Something went wrong.'); return; }
+    localStorage.setItem(ADMIN_TOKEN_KEY, data.token);
+    go('admin');
+  } catch(e){
+    showMsg('adminMsg', 'Could not reach the server. Check your connection and try again.');
+  }
+}
+
+function adminLogout(){
+  localStorage.removeItem(ADMIN_TOKEN_KEY);
+  go('admin');
+}
+
+async function loadAdminApplications(){
+  const token = localStorage.getItem(ADMIN_TOKEN_KEY);
+  const listEl = document.getElementById('adminList');
+  try{
+    const res = await fetch('/api/admin/applications', { headers:{ 'Authorization':'Bearer '+token } });
+    if(!res.ok){ localStorage.removeItem(ADMIN_TOKEN_KEY); go('admin'); return; }
+    const data = await res.json();
+    if(!data.applications.length){
+      listEl.innerHTML = '<p class="sub">No applications yet.</p>';
+      return;
+    }
+    listEl.innerHTML = data.applications.map(a => {
+      const waLink = 'https://wa.me/254' + a.phone.replace(/^0/, '');
+      return `
+        <div class="card" style="margin-bottom:14px;">
+          <p style="font-weight:600; color:var(--navy); margin:0 0 4px;">${a.name} — KSh ${a.amount}</p>
+          <p class="sub" style="margin:0 0 10px;">${a.category} · ${a.term} · ID ${a.idnum} · Kin: ${a.kin}</p>
+          <p class="sub" style="margin:0 0 12px;">Status: <b>${a.status}</b></p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <a class="btn btn-primary btn-sm" href="${waLink}" target="_blank" rel="noopener">WhatsApp ${a.phone}</a>
+            <button class="btn btn-ghost btn-sm" onclick="setAdminStatus('${a._id}','Approved')">Approve</button>
+            <button class="btn btn-ghost btn-sm" onclick="setAdminStatus('${a._id}','Rejected')">Reject</button>
+            <button class="btn btn-ghost btn-sm" onclick="setAdminStatus('${a._id}','Disbursed')">Disbursed</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  } catch(e){
+    listEl.innerHTML = '<p class="sub">Could not reach the server.</p>';
+  }
+}
+
+async function setAdminStatus(id, status){
+  const token = localStorage.getItem(ADMIN_TOKEN_KEY);
+  try{
+    await fetch('/api/admin/applications/' + id + '/status', {
+      method:'POST',
+      headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token},
+      body: JSON.stringify({ status })
+    });
+    loadAdminApplications();
+  } catch(e){
+    alert('Could not update status, check your connection.');
   }
 }
 
