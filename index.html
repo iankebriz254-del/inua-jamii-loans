@@ -245,6 +245,7 @@ const ICONS = {
 /* ---------- Real session state (backed by the server + database) ---------- */
 let state = { loggedIn:false, user:null, application:null };
 let currentPage = 'home';
+const API_BASE = 'https://tumaini-loans.onrender.com';
 const TOKEN_KEY = 'tumaini_token';
 const ADMIN_TOKEN_KEY = 'tumaini_admin_token';
 
@@ -464,7 +465,7 @@ async function submitSignup(){
   setErr('f-pass2', pass !== pass2 || !pass2); if(pass !== pass2 || !pass2) ok=false;
   if(!ok){ showMsg('signupMsg', 'Please fix the highlighted fields.'); return; }
   try{
-    const res = await fetch('/api/signup', {
+    const res = await fetch(API_BASE + '/api/signup', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ name, phone, password: pass })
     });
@@ -487,7 +488,7 @@ async function submitLogin(){
   setErr('lf-pass', !pass); if(!pass) ok=false;
   if(!ok){ showMsg('loginMsg', 'Please fill in both fields.'); return; }
   try{
-    const res = await fetch('/api/login', {
+    const res = await fetch(API_BASE + '/api/login', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ phone, password: pass })
     });
@@ -496,7 +497,7 @@ async function submitLogin(){
     localStorage.setItem(TOKEN_KEY, data.token);
     state.loggedIn = true;
     state.user = { name: data.name };
-    const meRes = await fetch('/api/me', { headers:{ 'Authorization':'Bearer '+data.token } });
+    const meRes = await fetch(API_BASE + '/api/me', { headers:{ 'Authorization':'Bearer '+data.token } });
     const meData = await meRes.json();
     state.application = meData.application || null;
     go('dashboard');
@@ -523,7 +524,7 @@ async function submitApplication(){
   };
   try{
     const token = localStorage.getItem(TOKEN_KEY);
-    const res = await fetch('/api/apply', {
+    const res = await fetch(API_BASE + '/api/apply', {
       method:'POST',
       headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token},
       body: JSON.stringify(payload)
@@ -540,7 +541,7 @@ async function submitApplication(){
 async function submitAdminLogin(){
   const password = document.getElementById('admin-pass').value;
   try{
-    const res = await fetch('/api/admin/login', {
+    const res = await fetch(API_BASE + '/api/admin/login', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ password })
     });
@@ -562,7 +563,7 @@ async function loadAdminApplications(){
   const token = localStorage.getItem(ADMIN_TOKEN_KEY);
   const listEl = document.getElementById('adminList');
   try{
-    const res = await fetch('/api/admin/applications', { headers:{ 'Authorization':'Bearer '+token } });
+    const res = await fetch(API_BASE + '/api/admin/applications', { headers:{ 'Authorization':'Bearer '+token } });
     if(!res.ok){ localStorage.removeItem(ADMIN_TOKEN_KEY); go('admin'); return; }
     const data = await res.json();
     if(!data.applications.length){
@@ -593,7 +594,7 @@ async function loadAdminApplications(){
 async function setAdminStatus(id, status){
   const token = localStorage.getItem(ADMIN_TOKEN_KEY);
   try{
-    await fetch('/api/admin/applications/' + id + '/status', {
+    await fetch(API_BASE + '/api/admin/applications/' + id + '/status', {
       method:'POST',
       headers:{'Content-Type':'application/json', 'Authorization':'Bearer '+token},
       body: JSON.stringify({ status })
@@ -613,7 +614,7 @@ async function restoreSession(){
   const token = localStorage.getItem(TOKEN_KEY);
   if(!token){ go('home'); return; }
   try{
-    const res = await fetch('/api/me', { headers:{ 'Authorization':'Bearer '+token } });
+    const res = await fetch(API_BASE + '/api/me', { headers:{ 'Authorization':'Bearer '+token } });
     if(!res.ok) throw new Error('session expired');
     const data = await res.json();
     state.loggedIn = true;
